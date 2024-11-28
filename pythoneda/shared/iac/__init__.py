@@ -1,10 +1,10 @@
 # vim: set fileencoding=utf-8
 """
-pythoneda/iac/__init__.py
+pythoneda/shared/iac/__init__.py
 
-This file ensures pythoneda.iac is a package.
+This file ensures pythoneda.shared.iac is a package.
 
-Copyright (C) 2024-today pythoneda IaC
+Copyright (C) 2024-today pythoneda-shared-iac/shared
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
