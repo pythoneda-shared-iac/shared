@@ -21,6 +21,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 """
 import abc
 from pythoneda.shared import BaseObject, Port, primary_key_attribute
+from pythoneda.shared.iac.events import InfrastructureUpdated
 from .resource import Resource
 from typing import List
 
@@ -96,6 +97,28 @@ class Stack(Port, BaseObject):
     async def up(self):
         """
         Brings up the stack.
+        :return: Either an InfrastructureUpdated event or an InfrastructureNotUpdated.
+        :rtype: pythoneda.shared.iac.events.InfrastructureUpdated
+        """
+        pass
+
+    @abc.abstractmethod
+    async def declare_docker_resources(
+        self,
+        imageName: str,
+        imageVersion: str,
+        imageUrl: str = None,
+    ):
+        """
+        Declares the Docker-dependent infrastructure resources.
+        :param imageName: The name of the Docker image.
+        :type imageName: str
+        :param imageVersion: The version of the Docker image.
+        :type imageVersion: str
+        :param imageUrl: The url of the Docker image.
+        :type imageUrl: str
+        :return: Either a DockerResourcesUpdated or DockerResourcesUpdateFailed event.
+        :rtype: pythoneda.shared.iac.events.DockerResourcesUpdated
         """
         pass
 
