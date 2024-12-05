@@ -20,7 +20,7 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
 """
 import abc
-from pythoneda.shared import BaseObject, Port, primary_key_attribute
+from pythoneda.shared import BaseObject, Event, Port, primary_key_attribute
 from pythoneda.shared.iac.events import InfrastructureUpdated
 from .resource import Resource
 from typing import List
@@ -94,11 +94,11 @@ class Stack(Port, BaseObject):
         return self._resources
 
     @abc.abstractmethod
-    async def up(self):
+    async def up(self) -> List[Event]:
         """
         Brings up the stack.
         :return: Either an InfrastructureUpdated event or an InfrastructureNotUpdated.
-        :rtype: pythoneda.shared.iac.events.InfrastructureUpdated
+        :rtype: List[pythoneda.shared.Event]
         """
         pass
 
