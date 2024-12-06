@@ -123,9 +123,9 @@ class Stack(Port, BaseObject):
         pass
 
     @abc.abstractmethod
-    async def down(self):
+    async def destroy(self):
         """
-        Brings down the stack.
+        Deletes the stack.
         """
         pass
 
