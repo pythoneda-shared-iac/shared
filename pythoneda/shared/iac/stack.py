@@ -23,7 +23,7 @@ import abc
 from pythoneda.shared import BaseObject, Event, Port, primary_key_attribute
 from pythoneda.shared.iac.events import InfrastructureUpdated
 from .resource import Resource
-from typing import List
+from typing import Any, Dict, List
 
 
 class Stack(Port, BaseObject):
@@ -54,6 +54,7 @@ class Stack(Port, BaseObject):
         self._project_name = projectName
         self._location = location
         self._resources = []
+        self._outcome = None
 
     @property
     @primary_key_attribute
@@ -102,6 +103,15 @@ class Stack(Port, BaseObject):
         """
         pass
 
+    @property
+    def outcome(self) -> Any:
+        """
+        Retrieves the outcome of the "up" operation.
+        :return: Such outcome.
+        :rtype: Any
+        """
+        return self._outcome
+
     @abc.abstractmethod
     async def declare_docker_resources(
         self,
@@ -119,6 +129,15 @@ class Stack(Port, BaseObject):
         :type imageUrl: str
         :return: Either a DockerResourcesUpdated or DockerResourcesUpdateFailed event.
         :rtype: pythoneda.shared.iac.events.DockerResourcesUpdated
+        """
+        pass
+
+    @abc.abstractmethod
+    async def retrieve_container_registry_credentials(self) -> Dict[str, str]:
+        """
+        Retrieves the container registry credentials.
+        :return: A dictionary with the credentials.
+        :rtype: Dict[str, str]
         """
         pass
 
