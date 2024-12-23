@@ -1,8 +1,8 @@
 # vim: set fileencoding=utf-8
 """
-pythoneda/shared/iac/update_stack.py
+pythoneda/shared/iac/update_docker_resources.py
 
-This script defines the UpdateStack class.
+This script defines the UpdateDockerResources class.
 
 Copyright (C) 2024-today pythoneda IaC
 
@@ -24,29 +24,28 @@ from .stack_operation import StackOperation
 from pythoneda.shared import Event
 from pythoneda.shared.iac.events import (
     DockerResourcesUpdateRequested,
-    InfrastructureUpdateRequested,
 )
 from typing import Dict, List
 
 
-class UpdateStack(StackOperation, abc.ABC):
+class UpdateDockerResources(StackOperation, abc.ABC):
     """
-    Updates PythonEDA IaC stacks.
+    Updates Docker resources in IaC stacks.
 
-    Class name: UpdateStack
+    Class name: UpdateDockerResources
 
     Responsibilities:
-        - Represent the action of updating a IaC stack.
+        - Represent the action of updating Docker resources in IaC stacks.
 
     Collaborators:
         - None
     """
 
-    def __init__(self, event: InfrastructureUpdateRequested):
+    def __init__(self, event: DockerResourcesUpdateRequested):
         """
-        Creates a new UpdateStack instance.
+        Creates a new UpdateDockerResources instance.
         :param event: The event.
-        :type event: org.acmsl.iac.licdata.domain.InfrastructureUpdateRequested
+        :type event: pythoneda.shared.iac.events.DockerResourcesUpdateRequested
         """
         super().__init__(event)
 
@@ -54,30 +53,8 @@ class UpdateStack(StackOperation, abc.ABC):
     async def up(self) -> List[Event]:
         """
         Brings up the stack.
-        :return: Either an InfrastructureUpdated event or an InfrastructureNotUpdated.
+        :return: Either an DockerResourcesUpdated event or an DockerResourcesUpdateFailed.
         :rtype: List[pythoneda.shared.Event]
-        """
-        pass
-
-    @abc.abstractmethod
-    async def declare_docker_resources(
-        self, event: DockerResourcesUpdateRequested
-    ) -> Event:
-        """
-        Declares the Docker-dependent infrastructure resources.
-        :param event: The request.
-        :type event: pythoneda.shared.iac.events.DockerResourcesUpdateRequested
-        :return: Either a DockerResourcesUpdated or DockerResourcesUpdateFailed event.
-        :rtype: pythoneda.shared.Event
-        """
-        pass
-
-    @abc.abstractmethod
-    async def retrieve_container_registry_credentials(self) -> Dict[str, str]:
-        """
-        Retrieves the container registry credentials.
-        :return: A dictionary with the credentials.
-        :rtype: Dict[str, str]
         """
         pass
 

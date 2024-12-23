@@ -1,8 +1,8 @@
 # vim: set fileencoding=utf-8
 """
-pythoneda/shared/iac/stack_operation_factory.py
+pythoneda/shared/iac/remove_docker_resources.py
 
-This script defines the StackOperationFactory class.
+This script defines the RemoveDockerResources class.
 
 Copyright (C) 2024-today pythoneda IaC
 
@@ -20,51 +20,43 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
 """
 from .stack_operation import StackOperation
-import abc
-from pythoneda.shared import BaseObject, Port
 from pythoneda.shared.iac.events import (
+    DockerResourcesRemovalFailed,
     DockerResourcesRemovalRequested,
-    DockerResourcesUpdateRequested,
-    InfrastructureRemovalRequested,
-    InfrastructureUpdateRequested,
+    DockerResourcesRemoved,
 )
+from typing import Union
 
 
-class StackOperationFactory(Port, BaseObject, abc.ABC):
+class RemoveDockerResources(StackOperation):
     """
-    Creates stacks.
+    Removes Docker resources in a stack.
 
-    Class name: StackOperationFactory
+    Class name: RemoveDockerResources
 
     Responsibilities:
-        - Create StackOperation instances.
+        - Represent the action of removing Docker resources in a IaC stack.
 
     Collaborators:
-        - pythoneda.iac.Stack
+        - None
     """
 
-    def __init__(self):
+    def __init__(self, event: DockerResourcesRemovalRequested):
         """
-        Creates a new StackOperationFactory instance.
+        Creates a new RemoveDockerResources instance.
+        :param event: The event.
+        :type event: pythoneda.shared.iac.events.DockerResourcesRemovalRequested]
         """
-        super().__init__()
+        super().__init__(event)
 
     @abc.abstractmethod
-    def new(
+    async def perform(
         self,
-        event: Union[
-            DockerResourcesRemovalRequested,
-            DockerResourcesUpdateRequested,
-            InfrastructureUpdateRequested,
-            InfrastructureRemovalRequested,
-        ],
-    ) -> StackOperation:
+    ) -> Union[DockerResourcesRemoved, DockerResourcesRemovalFailed]:
         """
-        Creates a new stack operation.
-        :param event: The event.
-        :type event: Union[DockerResourcesRemovalRequested, DockerResourcesUpdateRequested, InfrastructureUpdateRequested, InfrastructureRemovalRequested],
-        :return: A stack operation.
-        :rtype: pythoneda.shared.iac.StackOperation
+        Removes the Docker-dependent infrastructure resources.
+        :return: Either a DockerResourcesRemoved or DockerResourcesRemovalFailed event.
+        :rtype: Union[DockerResourcesRemoved, DockerResourcesRemovalFailed]
         """
         pass
 

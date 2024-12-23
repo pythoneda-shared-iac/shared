@@ -23,8 +23,10 @@ __path__ = __import__("pkgutil").extend_path(__path__, __name__)
 
 from .resource import Resource
 from .stack_operation import StackOperation
-from .update_stack import UpdateStack
-from .remove_stack import RemoveStack
+from .remove_docker_resources import RemoveDockerResources
+from .remove_infrastructure import RemoveInfrastructure
+from .update_docker_resources import UpdateDockerResources
+from .update_infrastructure import UpdateInfrastructure
 from .stack_operation_factory import StackOperationFactory
 
 # vim: syntax=python ts=4 sw=4 sts=4 tw=79 sr et
