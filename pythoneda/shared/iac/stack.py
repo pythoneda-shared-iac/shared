@@ -142,6 +142,19 @@ class Stack(Port, BaseObject):
         pass
 
     @abc.abstractmethod
+    def request_docker_image(self, secretName: str, registryUrl: str):
+        """
+        Emits a request for the Docker image.
+        :param secretName: The name of the secret.
+        :type secretName: str
+        :param registryUrl: The url of the registry.
+        :type registryUrl: str
+        :return: A DockerImageRequested event.
+        :rtype: pythoneda.shared.artifact.events.DockerImageRequested
+        """
+        pass
+
+    @abc.abstractmethod
     async def destroy(self):
         """
         Deletes the stack.
