@@ -1,8 +1,8 @@
 # vim: set fileencoding=utf-8
 """
-pythoneda/iac/stack_factory.py
+pythoneda/shared/iac/stack_operation_factory.py
 
-This script defines the StackFactory class.
+This script defines the StackOperationFactory class.
 
 Copyright (C) 2024-today pythoneda IaC
 
@@ -19,19 +19,23 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
 """
-from .stack import Stack
+from .stack_operation import StackOperation
 import abc
 from pythoneda.shared import BaseObject, Port
+from pythoneda.shared.iac.events import (
+    InfrastructureRemovalRequested,
+    InfrastructureUpdateRequested,
+)
 
 
-class StackFactory(Port, BaseObject):
+class StackOperationFactory(Port, BaseObject):
     """
     Creates stacks.
 
-    Class name: StackFactory
+    Class name: StackOperationFactory
 
     Responsibilities:
-        - Create Stack instances.
+        - Create StackOperation instances.
 
     Collaborators:
         - pythoneda.iac.Stack
@@ -39,20 +43,19 @@ class StackFactory(Port, BaseObject):
 
     def __init__(self):
         """
-        Creates a new StackFactory instance.
+        Creates a new StackOperationFactory instance.
         """
         super().__init__()
 
     @abc.abstractmethod
-    def new(self, stackName: str, projectName: str, location: str) -> Stack:
+    def new(
+        self,
+        event: Union[InfrastructureUpdateRequested, InfrastructureRemovalRequested],
+    ) -> StackOperation:
         """
-        Creates a new stack.
-        :param stackName: The stack name.
-        :type stackName: str
-        :param projectName: The project name.
-        :type projectName: str
-        :param location: The location.
-        :type location: str
+        Creates a new stack operation.
+        :param event: The event.
+        :type event: Union[InfrastructureUpdateRequested, InfrastructureRemovalRequested]
         """
         pass
 

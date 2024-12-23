@@ -22,8 +22,10 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 __path__ = __import__("pkgutil").extend_path(__path__, __name__)
 
 from .resource import Resource
-from .stack import Stack
-from .stack_factory import StackFactory
+from .stack_operation import StackOperation
+from .update_stack import UpdateStack
+from .remove_stack import RemoveStack
+from .stack_operation_factory import StackOperationFactory
 
 # vim: syntax=python ts=4 sw=4 sts=4 tw=79 sr et
 # Local Variables:

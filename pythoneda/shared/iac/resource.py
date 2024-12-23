@@ -1,6 +1,6 @@
 # vim: set fileencoding=utf-8
 """
-pythoneda/iac/resource.py
+pythoneda/shared/iac/resource.py
 
 This script defines the Resource class.
 
