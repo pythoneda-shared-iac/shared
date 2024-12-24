@@ -25,6 +25,7 @@ from .resource import Resource
 from .stack_operation import StackOperation
 from .remove_docker_resources import RemoveDockerResources
 from .remove_infrastructure import RemoveInfrastructure
+from .request_docker_image_details import RequestDockerImageDetails
 from .update_docker_resources import UpdateDockerResources
 from .update_infrastructure import UpdateInfrastructure
 from .stack_operation_factory import StackOperationFactory

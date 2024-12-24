@@ -19,16 +19,17 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
 """
-from .stack_operation import StackOperation
+import abc
 from pythoneda.shared.iac.events import (
     DockerResourcesRemovalFailed,
     DockerResourcesRemovalRequested,
     DockerResourcesRemoved,
 )
+from .stack_operation import StackOperation
 from typing import Union
 
 
-class RemoveDockerResources(StackOperation):
+class RemoveDockerResources(StackOperation, abc.ABC):
     """
     Removes Docker resources in a stack.
 

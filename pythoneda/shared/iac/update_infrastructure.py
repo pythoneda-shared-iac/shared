@@ -50,7 +50,7 @@ class UpdateInfrastructure(StackOperation, abc.ABC):
         super().__init__(event)
 
     @abc.abstractmethod
-    async def up(self) -> List[Event]:
+    async def perform(self) -> List[Event]:
         """
         Brings up the stack.
         :return: Either an InfrastructureUpdated event or an InfrastructureUpdateFailed.

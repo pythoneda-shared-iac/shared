@@ -1,8 +1,8 @@
 # vim: set fileencoding=utf-8
 """
-pythoneda/shared/iac/remove_infrastructure.py
+pythoneda/shared/iac/request_docker_image_details.py
 
-This script defines the RemoveInfrastructure class.
+This script defines the RequestDockerImageDetails class.
 
 Copyright (C) 2024-today pythoneda IaC
 
@@ -20,40 +20,40 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
 """
 import abc
+from .stack_operation import StackOperation
 from pythoneda.shared import Event
 from pythoneda.shared.iac.events import (
-    InfrastructureRemovalRequested,
+    DockerImageDetailsRequested,
 )
-from .stack_operation import StackOperation
-from typing import List
+from typing import Dict, List
 
 
-class RemoveInfrastructure(StackOperation, abc.ABC):
+class RequestDockerImageDetails(StackOperation, abc.ABC):
     """
-    Removes the infrastructure of a IaC stack.
+    Fills-in the details of the desired Docker image to request.
 
-    Class name: RemoveInfrastructure
+    Class name: RequestDockerImageDetails
 
     Responsibilities:
-        - Represent the action of removing the infrastructure of a IaC stack.
+        - Represent the action of asking for details of a Docker image.
 
     Collaborators:
         - None
     """
 
-    def __init__(self, event: InfrastructureRemovalRequested):
+    def __init__(self, event: DockerImageDetailsRequested):
         """
-        Creates a new RemoveInfrastructure instance.
+        Creates a new RequestDockerImageDetails instance.
         :param event: The event.
-        :type event: pythoneda.shared.iac.events.InfrastructureRemovalRequested
+        :type event: pythoneda.shared.iac.events.DockerImageDetailsRequested
         """
         super().__init__(event)
 
     @abc.abstractmethod
     async def perform(self) -> List[Event]:
         """
-        Removes the stack.
-        :return: The list of events representing the outcome of the operation: InfrastructureRemoved/InfrastructureRemovalFailed.
+        Brings up the stack.
+        :return: A DockerImageRequested event.
         :rtype: List[pythoneda.shared.Event]
         """
         pass

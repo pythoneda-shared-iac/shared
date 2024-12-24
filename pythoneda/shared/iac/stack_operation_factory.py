@@ -19,7 +19,6 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
 """
-from .stack_operation import StackOperation
 import abc
 from pythoneda.shared import BaseObject, Port
 from pythoneda.shared.iac.events import (
@@ -28,6 +27,8 @@ from pythoneda.shared.iac.events import (
     InfrastructureRemovalRequested,
     InfrastructureUpdateRequested,
 )
+from .stack_operation import StackOperation
+from typing import Union
 
 
 class StackOperationFactory(Port, BaseObject, abc.ABC):

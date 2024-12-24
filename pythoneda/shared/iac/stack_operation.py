@@ -20,16 +20,16 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
 """
 import abc
-from pythoneda.shared import BaseObject, Event, Port, primary_key_attribute
+from pythoneda.shared import BaseObject, Event, primary_key_attribute
 from pythoneda.shared.iac.events import (
     InfrastructureUpdateRequested,
     InfrastructureRemovalRequested,
 )
 from .resource import Resource
-from typing import Any, Dict, List
+from typing import Any, Dict, List, Union
 
 
-class StackOperation(Port, BaseObject, abc.ABC):
+class StackOperation(BaseObject, abc.ABC):
     """
     An operation on a IaC stack.
 

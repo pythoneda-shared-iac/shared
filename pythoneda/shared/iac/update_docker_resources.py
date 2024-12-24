@@ -50,7 +50,7 @@ class UpdateDockerResources(StackOperation, abc.ABC):
         super().__init__(event)
 
     @abc.abstractmethod
-    async def up(self) -> List[Event]:
+    async def perform(self) -> List[Event]:
         """
         Brings up the stack.
         :return: Either an DockerResourcesUpdated event or an DockerResourcesUpdateFailed.
