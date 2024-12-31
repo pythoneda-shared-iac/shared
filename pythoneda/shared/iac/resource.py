@@ -113,6 +113,27 @@ class Resource(BaseObject, abc.ABC):
 
         return self._actual_resource
 
+    @classmethod
+    def name_for(cls, stackName: str, projectName: str, location: str) -> str:
+        """
+        Builds the resource name.
+        :param stackName: The name of the stack.
+        :type stackName: str
+        :param projectName: The name of the project.
+        :type projectName: str
+        :param location: The Azure location.
+        :type location: str
+        :return: The resource name.
+        :rtype: str
+        """
+        return cls._truncate_name(
+            stackName,
+            projectName,
+            location,
+            cls._resource_name(stackName, projectName, location),
+            cls.max_length,
+        )
+
     def create(self) -> Any:
         """
         Creates the resource.
@@ -135,16 +156,9 @@ class Resource(BaseObject, abc.ABC):
         :return: The resource name.
         :rtype: str
         """
-        return self._truncate_name(
-            stackName,
-            projectName,
-            location,
-            self._resource_name(stackName, projectName, location),
-            self.max_length,
-        )
+        return self.__class__.name_for(stackName, projectName, location)
 
     @classmethod
-    @abc.abstractmethod
     def _location_abbrev(cls, location: str) -> str:
         """
         Abbreaviates the location.
@@ -153,10 +167,11 @@ class Resource(BaseObject, abc.ABC):
         :return: The abbreviated location.
         :rtype: str
         """
-        pass
+        return location
 
+    @classmethod
     @property
-    def max_length(self) -> int:
+    def max_length(cls) -> int:
         """
         Returns the maximum length allowed for naming this resource.
         :return: The maximum length.
@@ -164,8 +179,9 @@ class Resource(BaseObject, abc.ABC):
         """
         raise NotImplementedError("max_length property must be implemented.")
 
+    @classmethod
     def _truncate_name(
-        self, stackName: str, projectName: str, location: str, name: str, maxLength: int
+        cls, stackName: str, projectName: str, location: str, name: str, maxLength: int
     ) -> str:
         """
         Builds the resource name prefix.
@@ -182,7 +198,7 @@ class Resource(BaseObject, abc.ABC):
         :return: The resource name prefix.
         :rtype: str
         """
-        location_abbrev = self._location_abbrev(location)
+        location_abbrev = cls._location_abbrev(location)
 
         # Calculate fixed lengths: stack initial, dots, and location abbreviation
         fixed_length = len(projectName) + len(location_abbrev) + 1  # stack name initial
@@ -194,8 +210,9 @@ class Resource(BaseObject, abc.ABC):
         name_truncated = name[:max_name_length]
         return f"{stackName[0]}{projectName}{location_abbrev}{name_truncated}"
 
+    @classmethod
     @abc.abstractmethod
-    def _resource_name(self, stackName: str, projectName: str, location: str) -> str:
+    def _resource_name(cls, stackName: str, projectName: str, location: str) -> str:
         """
         Builds the resource name.
         :param stackName: The name of the stack.
