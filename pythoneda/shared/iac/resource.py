@@ -61,9 +61,11 @@ class Resource(BaseObject, abc.ABC):
         self._project_name = projectName
         self._location = location
         self._dependencies = dependencies
+        self._actual_resource = None
         for name, value in dependencies.items():
             setattr(self, name, value)
-        self._actual_resource = None
+        self._actual_resource = self.create()
+        self._post_create(self._actual_resource)
 
     @property
     def stack_name(self) -> str:
@@ -108,9 +110,6 @@ class Resource(BaseObject, abc.ABC):
         :return: The actual resource.
         :rtype: Any
         """
-        if self._actual_resource is None:
-            self.create()
-
         return self._actual_resource
 
     @classmethod
@@ -141,8 +140,7 @@ class Resource(BaseObject, abc.ABC):
         :rtype: Any
         """
         name = self._build_name(self.stack_name, self.project_name, self.location)
-        self._actual_resource = self._create(name)
-        self._post_create(self._actual_resource)
+        return self._create(name)
 
     def _build_name(self, stackName: str, projectName: str, location: str) -> str:
         """
@@ -246,13 +244,29 @@ class Resource(BaseObject, abc.ABC):
         """
         pass
 
+    @classmethod
+    @abc.abstractmethod
+    def from_id(cls, id: str, name: str = None) -> Any:
+        """
+        Retrieves an existing resource from its id.
+        :param id: The id.
+        :type id: str
+        :param name: The name.
+        :type name: str
+        :return resource: The resource.
+        :rtype resource: Any
+        """
+        pass
+
     def __getattr__(self, attr):
         """
         Delegates attribute/method lookup to the wrapped instance.
         :param attr: The attribute.
-        :type attr: Any
+        :type attr: str
+        :return: The attribute value.
+        :rtype: Any
         """
-        return getattr(self.actual_resource, attr)
+        return getattr(self._actual_resource, attr)
 
 
 # vim: syntax=python ts=4 sw=4 sts=4 tw=79 sr et
